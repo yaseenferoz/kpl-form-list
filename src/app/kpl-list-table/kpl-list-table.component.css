@@ -1,0 +1,52 @@
+.table-container {
+    margin: 0 auto;
+    width: 80%; /* Adjust width as needed */
+  }
+  ::ng-deep .mat-mdc-menu-content{
+    padding: 0 !important;
+  }
+
+
+
+
+/* Filter input */
+.search-field {
+    margin-bottom: 10px;
+  }
+  
+  /* Export button */
+  .export-button {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    float: right;
+  }
+  
+  .export-button:hover {
+    background-color: #218838;
+  }
+  /* kpl-list-table.component.css */
+
+.search-field {
+    width: 300px; /* Adjust width as needed */
+  }
+  
+  /* Customize input appearance */
+  .mat-input-element {
+    background-color: transparent; /* Remove background color */
+    border-bottom: 1px solid #333; /* Add custom bottom border */
+  }
+  
+  /* Change placeholder color */
+  .mat-form-field-label {
+    color: #999; /* Adjust placeholder color */
+  }
+  
+  /* Change label color */
+  .mat-form-field-underline {
+    color: #333; /* Adjust label color */
+  }
+  

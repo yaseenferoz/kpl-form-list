@@ -1,0 +1,13 @@
+<div class="player-details">
+    <h2>{{ player?.name }}</h2>
+    <div class="details">
+      <p><strong>Phone:</strong> {{ player?.phone }}</p>
+      <p><strong>Village:</strong> {{ player?.villageName }}</p>
+      <p><strong>Player Type:</strong> {{ player?.playerType }}</p>
+    </div>
+    <div class="photo-container">
+      <img [src]="player?.photo" alt="Player Photo">
+    </div>
+    <button class="back-button" (click)="goBack()">Back</button>
+  </div>
+  
