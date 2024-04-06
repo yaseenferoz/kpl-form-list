@@ -15,6 +15,7 @@ export class KplListTableComponent implements AfterViewInit {
   dataSource = new MatTableDataSource<any>();
   displayedColumns: string[] = ['name', 'phone', 'village', 'playerType', 'photo', 'actions'];
   totalRecords: number = 0;
+  isLoading: boolean = false;
   selectedRecordId: string = '';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -22,9 +23,14 @@ export class KplListTableComponent implements AfterViewInit {
 
   constructor(private http: HttpClient,private cdr: ChangeDetectorRef) { }
 baseUrl='https://cric-be.onrender.com/api/forms'
-  ngAfterViewInit(): void {
-    this.getData(); // Move the initialization to ngAfterViewInit
-  }
+ngAfterViewInit(): void {
+  // Defer setting isLoading to true
+  Promise.resolve().then(() => {
+    this.isLoading = true;
+    this.getData();
+  });
+}
+
   exportToExcel(): void {
     // Define columns to export
     const columnsToExport = ['name', 'phone', 'villageName', 'playerType', 'photo'];
@@ -44,38 +50,49 @@ baseUrl='https://cric-be.onrender.com/api/forms'
     // Save the workbook as an Excel file
     XLSX.writeFile(wb, 'data.xlsx');
 }
+getSerialNumber(index: number): number {
+  // Calculate the serial number based on current page and page size
+  const pageIndex = this.paginator.pageIndex;
+  const pageSize = this.paginator.pageSize;
+  return pageIndex * pageSize + index + 1;
+}
 
 
-  getData(): void {
-    this.http.get<any[]>(this.baseUrl)
-      .subscribe({
-        next: data => {
-          if (data) {
-            this.dataSource.data = data;
-            this.totalRecords = this.dataSource.data.length;
-            this.dataSource.paginator = this.paginator;
-            this.dataSource.filterPredicate = (data: any, filter: string) => {
-              const dataStr = Object.keys(data).map(key => data[key]).join(' ');
-              return dataStr.toLowerCase().includes(filter);
-            };
-            this.dataSource.sortingDataAccessor = (item: any, property: string) => {
-              switch(property) {
-                case 'name': return item.name;
-                case 'phone': return item.phone;
-                case 'village': return item.villageName;
-                case 'playerType': return item.playerType;
-                default: return '';
-              }
-            };
-          } else {
-            console.error('Data received from API is not an array:', data);
-          }
-        },
-        error: error => {
-          console.error('Error fetching data from API:', error);
+
+
+getData(): void {
+  this.http.get<any[]>(this.baseUrl)
+    .subscribe({
+      next: data => {
+        if (data) {
+          this.dataSource.data = data;
+          this.totalRecords = this.dataSource.data.length;
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.filterPredicate = (data: any, filter: string) => {
+            const dataStr = Object.keys(data).map(key => data[key]).join(' ');
+            return dataStr.toLowerCase().includes(filter);
+          };
+          this.dataSource.sortingDataAccessor = (item: any, property: string) => {
+            switch(property) {
+              case 'name': return item.name;
+              case 'phone': return item.phone;
+              case 'village': return item.villageName;
+              case 'playerType': return item.playerType;
+              default: return '';
+            }
+          };
+        } else {
+          console.error('Data received from API is not an array:', data);
         }
-      });
-  }
+      },
+      error: error => {
+        console.error('Error fetching data from API:', error);
+      },
+      complete: () => {
+        this.isLoading = false; // Set isLoading to false when the request completes
+      }
+    });
+}
 
   applyFilter(event: Event): void {
     const filterValue = (event.target as HTMLInputElement).value.trim().toLowerCase();

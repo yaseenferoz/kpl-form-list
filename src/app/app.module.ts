@@ -14,7 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Import BrowserAnimationsModule
 import { MatMenuModule } from '@angular/material/menu';
 import { PlayerDetailComponent } from './player-detail/player-detail.component'; // Import MatMenuModule
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @NgModule({
   declarations: [
     AppComponent,
@@ -33,7 +33,8 @@ import { PlayerDetailComponent } from './player-detail/player-detail.component';
     HttpClientModule,
     MatInputModule,
     BrowserAnimationsModule,
-    MatMenuModule
+    MatMenuModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

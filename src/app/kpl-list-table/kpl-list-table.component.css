@@ -1,6 +1,6 @@
 .table-container {
     margin: 0 auto;
-    width: 80%; /* Adjust width as needed */
+
   }
   ::ng-deep .mat-mdc-menu-content{
     padding: 0 !important;
